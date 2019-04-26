@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: testapi
+  name: testapi-service
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+    nodePort: 32003
+  selector:
+    app: testapi
+  sessionAffinity: None
+  type: NodePort
+

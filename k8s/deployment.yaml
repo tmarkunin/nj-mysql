@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testapi-deployment
+  labels:
+    app: testapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testapi
+  template:
+    metadata:
+      labels:
+        app: testapi
+    spec:
+      containers:
+      - name: testapi
+        image: tmarkunin/testapi:1.2
+        ports:
+        - containerPort: 3000
+        env:
+          - name: MYSQL_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: mysql_host
+          - name: DBNAME
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: dbname
+          - name: DBPASS
+            valueFrom:
+              secretKeyRef:
+                name: demo-secret
+                key: password
+          - name: UNAME
+            valueFrom:
+              secretKeyRef:
+                name: demo-secret
+                key: username
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /users
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 5

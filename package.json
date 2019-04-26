@@ -1,0 +1,17 @@
+{
+  "name": "apidemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "log-timestamp": "^0.3.0",
+    "mysql": "^2.17.1"
+  }
+}
