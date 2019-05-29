@@ -54,3 +54,5 @@ app.get('/users', function(req,res, next){
 var server = app.listen(3000, function(){
      console.log('Listen om port 3000');
 });
+
+exports.app = app;

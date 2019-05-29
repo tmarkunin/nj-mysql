@@ -6,7 +6,7 @@ describe('GET /healthz', function() {
   it('health check returns valid answer', function(done) {
     request(app)
       .get('/healthz')
-      .expect(200, done);
+      .expect(200, done)
       .end(function (err) {
                 if(err) {
                     return done(err);
