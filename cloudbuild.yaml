@@ -1,8 +1,8 @@
 steps:
 - id: build-test-image
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/nj-mysql-test:$COMMIT_SHA', '--target','test','.']
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/nj-mysql-test:latest', '--target','test','.']
 - id: run-tests
-  name: 'gcr.io/$PROJECT_ID/nj-mysql-test:$COMMIT_SHA'
+  name: 'gcr.io/$PROJECT_ID/nj-mysql-test:latest'
   waitFor:
     - build-test-image

@@ -27,11 +27,9 @@ FROM builder AS test
 # Copy the test files
 COPY tests tests
 
-# Override the NODE_ENV environment variable to 'dev', in order to get required test packages
-ENV NODE_ENV dev
 # 1. Get test packages; AND
 # 2. Install our test framework - mocha
-RUN npm update && npm install -g mocha && npm install supertest --save-dev
+RUN npm update && npm install -g mocha && npm install -g supertest --save
 # Override the command, to run the test instead of the application
 #CMD ["sleep", "100000"]
 CMD ["mocha", "tests/test.js", "--reporter", "spec", "--exit"]

@@ -1,4 +1,4 @@
-var request = require('supertest');
+var request = require('/usr/local/lib/node_modules/supertest');
 
 var app = require('../app').app;
 
