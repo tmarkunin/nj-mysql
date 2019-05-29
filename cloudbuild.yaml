@@ -1,0 +1,6 @@
+steps:
+- name: gcr.io/kaniko-project/executor
+  args:
+  - --destination=gcr.io/$PROJECT_ID/nj-mysql
+  - --cache=true
+  - --cache-ttl=6h
