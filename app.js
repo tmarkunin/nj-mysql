@@ -1,7 +1,7 @@
-var express = require('/usr/local/lib/node_modules/express');
+var express = require('/app/node_modules/express');
 var app = express();
-var mysql = require("mysql");
-require('log-timestamp');
+var mysql = require("/app/node_modules/mysql");
+require('/app/node_modules/log-timestamp');
 
 app.set('host', process.env.MYSQL_HOST || 'localhost');
 app.set('dbname', process.env.DBNAME || 'test');
