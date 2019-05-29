@@ -34,7 +34,8 @@ ENV NODE_ENV dev
 # 1. Get test packages; AND
 # 2. Install our test framework - mocha
 RUN npm update && \
-    npm install -g mocha
+    npm install -g mocha && \
+    npm install -g supertest
 # Override the command, to run the test instead of the application
 CMD ["mocha", "tests/test.js", "--reporter", "spec", "--exit"]
 
