@@ -12,8 +12,6 @@ RUN apt-get update \
  && apt-get clean \
  && echo 'Finished installing dependencies'
 
-ENV NODE_ENV=production
-
 
 # Install npm production packages
 COPY package.json /app/
@@ -33,10 +31,9 @@ COPY tests tests
 ENV NODE_ENV dev
 # 1. Get test packages; AND
 # 2. Install our test framework - mocha
-RUN npm update && \
-    npm install -g mocha && \
-    npm install -g supertest
+RUN npm update && npm install -g mocha && npm install supertest --save-dev
 # Override the command, to run the test instead of the application
+#CMD ["sleep", "100000"]
 CMD ["mocha", "tests/test.js", "--reporter", "spec", "--exit"]
 
 
