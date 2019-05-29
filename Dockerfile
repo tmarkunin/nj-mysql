@@ -29,7 +29,7 @@ COPY tests tests
 
 # 1. Get test packages; AND
 # 2. Install our test framework - mocha
-RUN npm update && npm install -g mocha && npm install -g supertest --save
+RUN npm update && npm install -g mocha && npm install -g supertest --save && npm install -g express
 # Override the command, to run the test instead of the application
 #CMD ["sleep", "100000"]
 CMD ["mocha", "tests/test.js", "--reporter", "spec", "--exit"]
