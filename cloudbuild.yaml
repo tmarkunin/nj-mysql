@@ -1,14 +1,11 @@
 steps:
 - id: build-test-image
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/nj-mysql-test:test', '--target','test','.']
+  args: ['build', '-t', 'gcr.io/nj-mysql-test:test', '--target','test','.']
 - id: run-tests
-  name: 'gcr.io/$PROJECT_ID/nj-mysql-test:test'
+  name: 'gcr.io/nj-mysql-test:test'
   waitFor:
     - build-test-image
 - id: build-stage-image
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/nj-mysql-test:stage', '--target','prod','.']
-- id: delete test image
-  name: 'gcr.io/cloud-builders/gcloud'
-  args: ['container', 'images', 'delete', 'gcr.io/$PROJECT_ID/nj-mysql-test:test']
+  args: ['build', '-t', 'gcr.io/nj-mysql-test:stage', '--target','prod','.']
