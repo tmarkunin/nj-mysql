@@ -12,3 +12,10 @@ steps:
 - id: push-stage-image
   name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/nj-mysql-test:stage']
+- id: list wks
+  name: 'gcr.io/cloud-builders/curl'
+  entrypoint: 'bash'
+  args:
+  - '-c' # pass what follows as a command to bash
+  - |
+    ls -la
