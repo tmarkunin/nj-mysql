@@ -27,9 +27,10 @@ FROM builder AS test
 # Copy the test files
 COPY tests tests
 
+ENV NODE_ENV dev
 # 1. Get test packages; AND
 # 2. Install our test framework - mocha
-RUN npm update && npm install -g mocha && npm install -g supertest --save && npm install -g express
+RUN npm update && npm install -g mocha
 # Override the command, to run the test instead of the application
 #CMD ["sleep", "100000"]
 CMD ["mocha", "tests/test.js", "--reporter", "spec", "--exit"]

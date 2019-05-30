@@ -1,0 +1,1 @@
+vagrant@linux:~/Desktop/nj-mysql$ sudo cloud-build-local --config=/home/vagrant/Desktop/nj-mysql/cloudbuild.yaml -dryrun=false /home/vagrant/Desktop/nj-mysql
