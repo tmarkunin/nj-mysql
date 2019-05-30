@@ -9,3 +9,6 @@ steps:
 - id: build-stage-image
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/nj-mysql-test:stage', '--target','prod','.']
+- id: push-stage-image
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/nj-mysql-test:stage']
