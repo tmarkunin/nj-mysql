@@ -1,5 +1,5 @@
 steps:
-- id: list wks 1
+- id: list wks
   name: 'gcr.io/cloud-builders/curl'
   entrypoint: 'bash'
   args:
@@ -15,14 +15,7 @@ steps:
     - build-test-image
 - id: build-stage-image
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/nj-mysql:stage', '--target','prod','.']
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/nj-mysql:$TAG_NAME', '--target','prod','.']
 - id: push-stage-image
   name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/nj-mysql:stage']
-- id: list wks 2
-  name: 'gcr.io/cloud-builders/curl'
-  entrypoint: 'bash'
-  args:
-  - '-c' # pass what follows as a command to bash
-  - |
-    ls -la
+  args: ['push', 'gcr.io/$PROJECT_ID/nj-mysql:$TAG_NAME']
