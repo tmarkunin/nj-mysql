@@ -18,8 +18,8 @@ gauge.set(10);
 setInterval(() => { gauge.inc();}, 2000);
 
 app.get('/metrics', (req, res) => {
-	res.set('Content-Type', register.contentType);
-	res.end(register.metrics());
+	res.set('Content-Type', registry.contentType);
+	res.end(registry.metrics());
 	console.log("Metrics ")
 });
 
