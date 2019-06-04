@@ -2,12 +2,23 @@ var express = require('/app/node_modules/express');
 var app = express();
 var mysql = require("/app/node_modules/mysql");
 require('/app/node_modules/log-timestamp');
+const client = require('prom-client');
+const Registry = client.Registry;
+const register = new Registry();
 
 app.set('host', process.env.MYSQL_HOST || 'localhost');
 app.set('dbname', process.env.DBNAME || 'test');
 app.set('user', process.env.UNAME || 'user1');
 app.set('password', process.env.DBPASS || 'pass1');
 
+const counter = new client.Counter({name: 'njs_health', help: 'Health status of nodejs app'});
+
+setInterval(() => { c.inc();}, 2000);
+
+server.get('/metrics', (req, res) => {
+	res.set('Content-Type', register.contentType);
+	res.end(register.metrics());
+});
 
 app.get('/healthz', function(req,res){
      res.send('Container is running.');
