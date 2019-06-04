@@ -3,7 +3,7 @@ var app = express();
 var mysql = require("/app/node_modules/mysql");
 require('/app/node_modules/log-timestamp');
 const client = require('prom-client');
-const Registry = client.Registry;
+const registry = client.Registry;
 const register = new Registry();
 
 app.set('host', process.env.MYSQL_HOST || 'localhost');
@@ -11,13 +11,17 @@ app.set('dbname', process.env.DBNAME || 'test');
 app.set('user', process.env.UNAME || 'user1');
 app.set('password', process.env.DBPASS || 'pass1');
 
-const counter = new client.Counter({name: 'njs_health', help: 'Health status of nodejs app'});
+const gauge = new client.Gauge({name: 'njs_health', help: 'Health status of nodejs app'});
 
-setInterval(() => { counter.inc();}, 2000);
+registry.registerMetric(gauge);
+gauge.set(10);
+
+setInterval(() => { gauge.inc();}, 2000);
 
 app.get('/metrics', (req, res) => {
 	res.set('Content-Type', register.contentType);
 	res.end(register.metrics());
+	console.log("Metrics ")
 });
 
 app.get('/healthz', function(req,res){
