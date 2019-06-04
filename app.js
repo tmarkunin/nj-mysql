@@ -4,7 +4,7 @@ var mysql = require("/app/node_modules/mysql");
 require('/app/node_modules/log-timestamp');
 const client = require('prom-client');
 const registry = client.Registry;
-const register = new Registry();
+const register = new registry();
 
 app.set('host', process.env.MYSQL_HOST || 'localhost');
 app.set('dbname', process.env.DBNAME || 'test');
