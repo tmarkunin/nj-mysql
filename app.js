@@ -15,7 +15,7 @@ const counter = new client.Counter({name: 'njs_health', help: 'Health status of 
 
 setInterval(() => { c.inc();}, 2000);
 
-server.get('/metrics', (req, res) => {
+app.get('/metrics', (req, res) => {
 	res.set('Content-Type', register.contentType);
 	res.end(register.metrics());
 });
