@@ -5,17 +5,38 @@ require('/app/node_modules/log-timestamp');
 const client = require('prom-client');
 const registry = new client.Registry();
 
-app.set('host', process.env.MYSQL_HOST || 'localhost');
+app.set('host', process.env.MYSQL_HOST || 'mongo');
 app.set('dbname', process.env.DBNAME || 'test');
 app.set('user', process.env.UNAME || 'user1');
 app.set('password', process.env.DBPASS || 'pass1');
 
 const gauge = new client.Gauge({name: 'njs_health', help: 'Health status of nodejs app'});
+const node_health_db_gauge = new client.Gauge({name: 'njs_health_db_availability', help: 'Check if mongodb is available'});
 
 registry.registerMetric(gauge);
-gauge.set(10);
+registry.registerMetric(node_health_db_gauge);
+gauge.set(1);
+node_health_db_gauge.set(1);
 
-setInterval(() => { gauge.inc();}, 2000);
+//Check mongodb availability each 4 sec
+setInterval(() => { 
+	
+        var dbconn = mysql.createConnection({
+        host     : app.get('host'),
+        user     : app.get('user'),
+        password : app.get('password'),
+        database : app.get('dbname')
+        });
+	
+	dbconn.connect(function(err){
+        if(err){
+          node_health_db_gauge.set(0);
+        }else{
+          node_health_db_gauge.set(1);
+        }
+      });
+			  
+		  }, 4000);
 
 app.get('/metrics', (req, res) => {
 	res.set('Content-Type', registry.contentType);
