@@ -13,7 +13,7 @@ app.set('password', process.env.DBPASS || 'pass1');
 
 const counter = new client.Counter({name: 'njs_health', help: 'Health status of nodejs app'});
 
-setInterval(() => { c.inc();}, 2000);
+setInterval(() => { counter.inc();}, 2000);
 
 app.get('/metrics', (req, res) => {
 	res.set('Content-Type', register.contentType);
