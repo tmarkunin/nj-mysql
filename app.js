@@ -7,8 +7,8 @@ const registry = new client.Registry();
 
 app.set('host', process.env.MYSQL_HOST || 'mongo');
 app.set('dbname', process.env.DBNAME || 'test');
-app.set('user', process.env.UNAME || 'user1');
-app.set('password', process.env.DBPASS || 'pass1');
+app.set('user', process.env.UNAME || 'root');
+app.set('password', process.env.DBPASS || 'password');
 
 const gauge = new client.Gauge({name: 'njs_health', help: 'Health status of nodejs app'});
 const node_health_db_gauge = new client.Gauge({name: 'njs_health_db_availability', help: 'Check if mongodb is available'});
