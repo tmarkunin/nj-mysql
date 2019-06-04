@@ -15,8 +15,8 @@ const node_health_db_gauge = new client.Gauge({name: 'njs_health_db_availability
 
 registry.registerMetric(gauge);
 registry.registerMetric(node_health_db_gauge);
-gauge.set(1);
-node_health_db_gauge.set(1);
+gauge.set(0, new Date());
+node_health_db_gauge.set(0, new Date());
 
 //Check mongodb availability each 4 sec
 setInterval(() => { 
@@ -30,9 +30,9 @@ setInterval(() => {
 	
 	dbconn.connect(function(err){
         if(err){
-          node_health_db_gauge.set(0);
+          node_health_db_gauge.set(0, new Date());
         }else{
-          node_health_db_gauge.set(1);
+          node_health_db_gauge.set(1, new Date());
         }
       });
 			  
