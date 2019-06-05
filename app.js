@@ -12,9 +12,11 @@ app.set('password', process.env.DBPASS || 'password');
 
 const gauge = new client.Gauge({name: 'njs_health', help: 'Health status of nodejs app'});
 const node_health_db_gauge = new client.Gauge({name: 'njs_health_db_availability', help: 'Check if mongodb is available'});
+const user_request_counter = new client.Counter({ name: 'user_request_counter', help: 'number of times users endpoint was requested' });
 
 registry.registerMetric(gauge);
 registry.registerMetric(node_health_db_gauge);
+registry.registerMetric(user_request_counter);
 gauge.set(0, new Date());
 node_health_db_gauge.set(0, new Date());
 
@@ -63,6 +65,7 @@ app.get('/users', function(req,res, next){
           console.error('Database connection error');
         }else{
           console.log('Database connection successful');
+	  user_request_counter.inc();
 
         }
       });
