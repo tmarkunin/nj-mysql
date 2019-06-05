@@ -17,7 +17,7 @@ services:
         aliases:
           - mongo
 
-prometheus:
+  prometheus:
     image: ${USER_NAME}/prometheus:latest
     ports:
       - '9090:9090'
