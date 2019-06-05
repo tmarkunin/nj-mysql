@@ -1,0 +1,33 @@
+version: '1.0'
+services:
+
+  nodejs:
+    image: ${DOCKER_USERNAME}/testapi:2.0
+    ports:
+      - 3000:3000
+    networks:
+      front_net:
+
+  maria:
+    image:  ${DOCKER_USERNAME}/maria:2.0
+    ports:
+      - 3306:3306
+    networks:
+      front_net:
+        aliases:
+          - mongo
+
+prometheus:
+    image: ${USER_NAME}/prometheus:latest
+    ports:
+      - '9090:9090'
+    networks:
+      front_net:
+      back_net:
+
+networks:
+  front_net:
+  back_net:
+
+
+
