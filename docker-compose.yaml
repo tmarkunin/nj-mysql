@@ -7,6 +7,8 @@ services:
       - 3000:3000
     networks:
       front_net:
+        aliases:
+          - nodejs
 
   maria:
     image:  ${DOCKER_USERNAME}/maria:2.0
