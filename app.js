@@ -22,17 +22,6 @@ registry.registerMetric(user_request_counter);
 gauge.set(0, new Date());
 node_health_db_gauge.set(0, new Date());
 
-//Just and example how to check URI availability
-setInterval(() => { 
-request('http://nodejs:3000/healthz', function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-	gauge.set(1, new Date());
-    } else {
-      	gauge.set(0, new Date());
-    }
-  })	  
-		  }, 4000);
-
 
 //Check mongodb availability each 4 sec
 setInterval(() => { 
@@ -47,8 +36,18 @@ setInterval(() => {
 	dbconn.connect(function(err){
         if(err){
           node_health_db_gauge.set(0, new Date());
+	  gauge.set(0, new Date());
+	  
         }else{
           node_health_db_gauge.set(1, new Date());
+	  //Just and example how to check URI availability
+          request('http://nodejs:3000/healthz', function (error, response, body) {
+    		if (!error && response.statusCode == 200) {
+			gauge.set(1, new Date());
+    		} else {
+      			gauge.set(0, new Date());
+    			}
+  	})	
         }
       });
 			  
