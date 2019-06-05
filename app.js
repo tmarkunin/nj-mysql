@@ -1,6 +1,8 @@
 var express = require('/app/node_modules/express');
 var app = express();
 var mysql = require("/app/node_modules/mysql");
+var request = require('request');
+
 require('/app/node_modules/log-timestamp');
 const client = require('prom-client');
 const registry = new client.Registry();
@@ -19,6 +21,18 @@ registry.registerMetric(node_health_db_gauge);
 registry.registerMetric(user_request_counter);
 gauge.set(0, new Date());
 node_health_db_gauge.set(0, new Date());
+
+//Just and example how to check URI availability
+setInterval(() => { 
+request('http://nodejs:3000/healthz', function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+	gauge.set(1, new Date());
+    } else {
+      	gauge.set(0, new Date());
+    }
+  })	  
+		  }, 4000);
+
 
 //Check mongodb availability each 4 sec
 setInterval(() => { 
@@ -86,7 +100,6 @@ app.get('/users', function(req,res, next){
       });
     
 });
-
 
 
 var server = app.listen(3000, function(){
