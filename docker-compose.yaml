@@ -2,7 +2,7 @@ version: '3.3'
 services:
 
   nodejs:
-    image: ${DOCKER_USERNAME}/testapi:2.0
+    image: ${DOCKER_USERNAME}/testapi:2.1
     ports:
       - 3000:80
     networks:
