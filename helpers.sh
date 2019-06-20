@@ -10,7 +10,7 @@ docker-machine create --driver google --google-project infra-243408 --google-mac
 eval $(docker-machine env ghost)
 export DOCKER_USERNAME=tmarkunin
 docker build -f prometheus/Dockerfile -t $DOCKER_USERNAME/prometheus:latest prometheus/
- docker build -t $DOCKER_USERNAME/testapi:2.0 . --target prod
+ docker build -t $DOCKER_USERNAME/testapi:2.1 . --target prod
  docker build -f db/Dockerfile -t $DOCKER_USERNAME/maria:2.0 db/
 
 docker-compose up -d
@@ -19,6 +19,13 @@ docker-compose up -d
 #Create gke cluster
 gcloud config set compute/zone us-central1-f
 gcloud container clusters create test_cluster  --machine-type=n1-standard-1 --num-nodes=1
+#Configure kubectl
+gcloud container clusters get-credentials test_cluster --zone europe-north1-a --project infra-243408
+
+#deployment for database on external VM
+kubectl apply -f k8s_ext_db/
+
+
 
 
 
