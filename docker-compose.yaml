@@ -17,7 +17,7 @@ services:
     networks:
       front_net:
         aliases:
-          - mongo
+          - mariadb
 
   prometheus:
     image: ${DOCKER_USERNAME}/prometheus:latest

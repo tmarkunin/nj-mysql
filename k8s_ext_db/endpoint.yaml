@@ -4,6 +4,6 @@ metadata:
  name: mysql-service
 subsets:
  - addresses:
-     - ip: 192.168.50.5
+     - ip: 10.132.0.6
    ports:
      - port: 3306

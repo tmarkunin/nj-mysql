@@ -7,7 +7,7 @@ require('/app/node_modules/log-timestamp');
 const client = require('prom-client');
 const registry = new client.Registry();
 
-app.set('host', process.env.MYSQL_HOST || 'mongo');
+app.set('host', process.env.MYSQL_HOST || 'mariadb');
 app.set('dbname', process.env.DBNAME || 'test');
 app.set('user', process.env.UNAME || 'root');
 app.set('password', process.env.DBPASS || 'password');

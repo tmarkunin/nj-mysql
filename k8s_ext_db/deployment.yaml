@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: testapi
-        image: tmarkunin/testapi:1.2
+        image: tmarkunin/testapi:2.1
         ports:
         - containerPort: 3000
         env:
