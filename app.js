@@ -41,7 +41,7 @@ setInterval(() => {
         }else{
           node_health_db_gauge.set(1, new Date());
 	  //Just and example how to check URI availability
-          request('http://testapi-service:80/healthz', function (error, response, body) {
+          request('http://testapi-service:3000/healthz', function (error, response, body) {
     		if (!error && response.statusCode == 200) {
 			gauge.set(1, new Date());
     		} else {
