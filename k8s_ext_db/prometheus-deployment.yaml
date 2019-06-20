@@ -1,0 +1,13 @@
+selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: tmarkunin/prometheus:1.0
+        ports:
+        - containerPort: 9090
