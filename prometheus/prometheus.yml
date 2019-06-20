@@ -10,4 +10,4 @@ scrape_configs:
   - job_name: 'nodejs'
     static_configs:
       - targets:
-        - 'testapi-service:3000'
+        - 'testapi-service:80'
