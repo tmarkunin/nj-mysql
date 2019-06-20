@@ -4,11 +4,11 @@ services:
   nodejs:
     image: ${DOCKER_USERNAME}/testapi:2.0
     ports:
-      - 3000:3000
+      - 3000:80
     networks:
       front_net:
         aliases:
-          - nodejs
+          - testapi-service
 
   maria:
     image:  ${DOCKER_USERNAME}/maria:2.0
@@ -20,7 +20,7 @@ services:
           - mariadb
 
   prometheus:
-    image: ${DOCKER_USERNAME}/prometheus:latest
+    image: ${DOCKER_USERNAME}/prometheus:1.1
     ports:
       - '9090:9090'
     networks:
