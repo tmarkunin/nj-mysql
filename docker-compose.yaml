@@ -20,7 +20,7 @@ services:
           - mongo
 
   prometheus:
-    image: ${USER_NAME}/prometheus:latest
+    image: ${DOCKER_USERNAME}/prometheus:latest
     ports:
       - '9090:9090'
     networks:
