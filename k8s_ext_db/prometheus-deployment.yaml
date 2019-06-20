@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: prometheus
-        image: tmarkunin/prometheus:1.0
+        image: tmarkunin/prometheus:1.1
         imagePullPolicy: Always
         ports:
         - containerPort: 9090

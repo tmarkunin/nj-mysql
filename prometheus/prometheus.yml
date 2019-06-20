@@ -7,7 +7,7 @@ scrape_configs:
       - targets:
         - 'localhost:9090'
 
-  - job_name: 'nodejs'
+  - job_name: 'testapi'
     static_configs:
       - targets:
         - 'testapi-service:80'
