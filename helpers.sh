@@ -25,7 +25,7 @@ docker-compose up -d
 #k8-s deployment
 #Create gke cluster
 #You need to change db IP in /k8s_ext_db/endpoint.yaml
-gcloud config set compute/zone us-central1-f
+gcloud config set compute/zone europe-north1-a	
 gcloud container clusters create test-cluster  --machine-type=n1-standard-1 --num-nodes=1
 #Configure kubectl
 gcloud container clusters get-credentials test_cluster --zone europe-north1-a --project @PROJECT
@@ -38,6 +38,11 @@ kubectl apply -f k8s
 
 #Deployment with Google CloudBuild
 gcloud services enable cloudbuild.googleapis.com
+#first apply all yaml files from k8s
+kubectl apply -f k8s
+#cloudbuild trigger will create new versions of testapi image and update
+# testapi-deployment with this version
+
 
 
 
