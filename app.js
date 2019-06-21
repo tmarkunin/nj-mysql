@@ -4,7 +4,7 @@ var mysql = require("/app/node_modules/mysql");
 var request = require('/app/node_modules/request');
 
 require('/app/node_modules/log-timestamp');
-const client = require('prom-client');
+const client = require('/app/node_modules/prom-client');
 const registry = new client.Registry();
 
 app.set('host', process.env.MYSQL_HOST || 'mariadb');
