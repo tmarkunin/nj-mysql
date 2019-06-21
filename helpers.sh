@@ -1,3 +1,10 @@
+#ebable GCP APIs
+gcloud projects list
+export PROJECT=YOUR_PROJECT_ID
+gcloud config set project YOUR_PROJECT_ID
+gcloud services list --available #list all available APIs
+gcloud services enable container.googleapis.com
+
 #Create firewall rule for GCP port 3000
 gcloud compute firewall-rules create nodejs-default --allow tcp:3000
 gcloud compute firewall-rules create cadvisor-default --allow tcp:8080
@@ -6,7 +13,7 @@ gcloud compute firewall-rules create prometheus-default --allow tcp:9090
 gcloud compute firewall-rules create mariadb-default --allow tcp:3306
 
 #For docker-compose execution with docker server in GCP
-docker-machine create --driver google --google-project infra-243408 --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts  --google-machine-type n1-standard-1  --google-zone europe-west1-b   ghost 
+docker-machine create --driver google --google-project @PROJECT --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts  --google-machine-type n1-standard-1  --google-zone europe-west1-b   ghost 
 eval $(docker-machine env ghost)
 export DOCKER_USERNAME=tmarkunin
 docker build -f prometheus/Dockerfile -t $DOCKER_USERNAME/prometheus:latest prometheus/
@@ -21,10 +28,16 @@ docker-compose up -d
 gcloud config set compute/zone us-central1-f
 gcloud container clusters create test-cluster  --machine-type=n1-standard-1 --num-nodes=1
 #Configure kubectl
-gcloud container clusters get-credentials test_cluster --zone europe-north1-a --project infra-243408
+gcloud container clusters get-credentials test_cluster --zone europe-north1-a --project @PROJECT
 
 #deployment for database on external VM
 kubectl apply -f k8s_ext_db/
+
+#deploy everything into k8s
+kubectl apply -f k8s
+
+#Deployment with Google CloudBuild
+gcloud services enable cloudbuild.googleapis.com
 
 
 
