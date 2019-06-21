@@ -25,7 +25,7 @@ steps:
   name: 'gcr.io/cloud-builders/kubectl'
   args:
   - apply
-  - f
+  - -f
   - 'k8s'
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
