@@ -8,7 +8,7 @@ steps:
     ls -la
 - id: build-test-image
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME.test', '--target','test','.']
+  args: ['build', '-f', 'Dockerfile-test','-t', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME.test', '--target','test','.']
 - id: run-tests
   name: 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME.test'
   waitFor:
