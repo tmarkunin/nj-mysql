@@ -26,7 +26,7 @@ docker-compose up -d
 #Create gke cluster
 #You need to change db IP in /k8s_ext_db/endpoint.yaml
 gcloud config set compute/zone europe-north1-a	
-gcloud container clusters create test-cluster  --machine-type=n1-standard-1 --num-nodes=1
+gcloud container clusters create test-cluster  --machine-type=n1-standard-1 --num-nodes=2
 #Configure kubectl
 gcloud container clusters get-credentials test_cluster --zone europe-north1-a --project @PROJECT
 
