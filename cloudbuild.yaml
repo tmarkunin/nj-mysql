@@ -15,7 +15,7 @@ steps:
     - build-test-image
 - id: build-stage-image
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME', '--target','prod','.']
+  args: ['build', '-f', 'Dockerfile','-t', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME', '--target','prod','.']
   waitFor:
     - run-tests
 - id: push-stage-image
