@@ -26,9 +26,8 @@ steps:
   args:
   - set
   - image
-  - deployment
   - 'deployment/testapi-deployment'
-  - testapi=gcr.io/[PROJECT-ID]/[IMAGE]:[TAG]
+  - 'testapi=gcr.io/$PROJECT_ID/testapi:$TAG_NAME'
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'

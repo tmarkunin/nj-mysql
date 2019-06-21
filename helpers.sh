@@ -42,6 +42,10 @@ gcloud services enable cloudbuild.googleapis.com
 kubectl apply -f k8s
 #cloudbuild trigger will create new versions of testapi image and update
 # testapi-deployment with this version
+# add IAM Kubernetes Engine Admin role to cloudbuild service account
+# https://cloud.google.com/cloud-build/docs/configuring-builds/build-test-deploy-artifacts
+
+
 
 
 
