@@ -1,7 +1,7 @@
 var express = require('/app/node_modules/express');
 var app = express();
 var mysql = require("/app/node_modules/mysql");
-var request = require('request');
+var request = require('/app/node_modules/request');
 
 require('/app/node_modules/log-timestamp');
 const client = require('prom-client');
