@@ -1,6 +1,7 @@
 #ebable GCP APIs
 gcloud projects list
 export PROJECT=YOUR_PROJECT_ID
+export ZONE='europe-north1-a'
 gcloud config set project YOUR_PROJECT_ID
 gcloud services list --available #list all available APIs
 gcloud services enable container.googleapis.com
@@ -25,10 +26,10 @@ docker-compose up -d
 #k8-s deployment
 #Create gke cluster
 #You need to change db IP in /k8s_ext_db/endpoint.yaml
-gcloud config set compute/zone europe-north1-a	
+gcloud config set compute/zone $ZONE	
 gcloud container clusters create test-cluster  --machine-type=n1-standard-1 --num-nodes=2
 #Configure kubectl
-gcloud container clusters get-credentials test_cluster --zone europe-north1-a --project @PROJECT
+gcloud container clusters get-credentials test_cluster --zone $ZONE --project @PROJECT
 
 #deployment for database on external VM
 kubectl apply -f k8s_ext_db/
