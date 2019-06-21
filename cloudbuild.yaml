@@ -1,4 +1,14 @@
 steps:
+- id: Deploy all yamls
+  name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - apply
+  - -f
+  - 'k8s'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
+  
 - id: list wks
   name: 'gcr.io/cloud-builders/curl'
   entrypoint: 'bash'
@@ -21,15 +31,7 @@ steps:
 - id: push-stage-image
   name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME']
-- id: Deploy all yamls
-  name: 'gcr.io/cloud-builders/kubectl'
-  args:
-  - apply
-  - -f
-  - 'k8s'
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
+
 - id: Update k8s deployment
   name: 'gcr.io/cloud-builders/kubectl'
   args:
