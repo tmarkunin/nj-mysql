@@ -1,0 +1,45 @@
+steps:
+- id: list wks
+  name: 'gcr.io/cloud-builders/curl'
+  entrypoint: 'bash'
+  args:
+  - '-c' # pass what follows as a command to bash
+  - |
+    ls -la
+- id: build-test-image
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', 'Dockerfile-test','-t', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME.test', '.']
+- id: run-tests
+  name: 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME.test'
+  waitFor:
+    - build-test-image
+- id: build-stage-image
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', 'Dockerfile','-t', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME', '.']
+  waitFor:
+    - run-tests
+    
+- id: push-stage-image
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME']
+
+- id: Deploy all yamls
+  name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - apply
+  - -f
+  - 'k8s'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
+  
+- id: Update k8s deployment
+  name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - set
+  - image
+  - 'deployment/testapi-deployment'
+  - 'testapi=gcr.io/$PROJECT_ID/testapi:$TAG_NAME'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
