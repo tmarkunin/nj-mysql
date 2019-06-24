@@ -6,11 +6,11 @@ steps:
   - '-c' # pass what follows as a command to bash
   - |
     sed -i 's/testapi-service/testapi-{{ .Release.Name }}/g' prometheus/prometheus.yml
-    
+
 # Build new Prometheus image
 - id: Build Prometheus image
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-f', 'Dockerfile','-t', 'gcr.io/$PROJECT_ID/prometheus:$TAG_NAME', 'prometheus']
+  args: ['build', '-f', 'prometheus/Dockerfile','-t', 'gcr.io/$PROJECT_ID/prometheus:$TAG_NAME', 'prometheus']
 
 
 # Build and test new testapi image
