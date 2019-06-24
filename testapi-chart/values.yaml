@@ -5,8 +5,8 @@
 testapi:
   name: testapi
   image:
-    repository: tmarkunin/testapi
-    tag: 2.1
+    repository: gcr.io/$PROJECT_ID/testapi
+    tag: $TAG_NAME
   imagePullPolicy: Always
   replicaCount: 1
   containerPort: 3000

@@ -7,6 +7,27 @@ steps:
   - |
     ls -la
 
+# Build and test new testapi image
+- id: build-test-image
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', 'Dockerfile-test','-t', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME.test', '.']
+- id: run-tests
+  name: 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME.test'
+  waitFor:
+    - build-test-image
+# Push new testapi image to the registry if the tests passed
+- id: build-stage-image
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', 'Dockerfile','-t', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME', '.']
+  waitFor:
+    - run-tests
+    
+- id: push-stage-image
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/testapi:$TAG_NAME']
+
+
+# Build helm cloudbuilder that will be used to deploy helm chart
 - id: Build Helm cloudbuilder image
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'helm_builder/Dockerfile', '--tag=gcr.io/$PROJECT_ID/helm', '--build-arg', 'HELM_VERSION=v2.14.0', 'helm_builder']
