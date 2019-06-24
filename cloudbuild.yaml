@@ -6,8 +6,16 @@ steps:
   - '-c' # pass what follows as a command to bash
   - |
     ls -la
+
 - id: Build Helm cloudbuilder image
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'helm_builder/Dockerfile', '--tag=gcr.io/$PROJECT_ID/helm', '--build-arg', 'HELM_VERSION=v2.14.0', 'helm_builder']
+
+- id: Deploy sample Helm chart
+  name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['install', 'stable/keel', '--name', 'keel', '--namespace', 'keel']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
 
 images: ['gcr.io/$PROJECT_ID/helm']
