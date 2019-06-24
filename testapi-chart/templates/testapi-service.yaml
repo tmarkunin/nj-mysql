@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: testapi
-  name: testapi-service-{{ .Release.Name }} 
+  name: testapi-service-{{ .Values.testapi.image.tag }} 
 spec:
   externalTrafficPolicy: Cluster
   ports:

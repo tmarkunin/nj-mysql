@@ -5,7 +5,7 @@ steps:
   args:
   - '-c' # pass what follows as a command to bash
   - |
-    sed -i 's/testapi-service/testapi-{{ .Release.Name }}/g' prometheus/prometheus.yml
+    sed -i 's/testapi-service/testapi-service-$TAG_NAME/g' prometheus/prometheus.yml
 
 - id: Substitute PROJECT_ID in values.yaml
   name: 'gcr.io/cloud-builders/curl'
