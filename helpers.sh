@@ -29,7 +29,7 @@ docker-compose up -d
 gcloud config set compute/zone $ZONE	
 gcloud container clusters create test-cluster  --machine-type=n1-standard-1 --num-nodes=2
 #Configure kubectl
-gcloud container clusters get-credentials test_cluster --zone $ZONE --project @PROJECT
+gcloud container clusters get-credentials test-cluster --zone $ZONE --project $PROJECT
 
 #deployment for database on external VM
 kubectl apply -f k8s_ext_db/
@@ -43,6 +43,22 @@ gcloud services enable cloudbuild.googleapis.com
 # testapi-deployment with this version
 # add IAM Kubernetes Engine Admin role to cloudbuild service account
 # https://cloud.google.com/cloud-build/docs/configuring-builds/build-test-deploy-artifacts
+
+
+#Deployment with Helm
+# 1. Install Helm into GKE
+curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+# add a service account within a namespace to segregate tiller
+kubectl --namespace kube-system create sa tiller
+# create a cluster role binding for tiller
+kubectl create clusterrolebinding tiller \
+    --clusterrole cluster-admin \
+    --serviceaccount=kube-system:tiller
+
+# initialized helm within the tiller service account
+helm init --service-account tiller
+# updates the repos for Helm repo integration
+helm repo update
 
 
 

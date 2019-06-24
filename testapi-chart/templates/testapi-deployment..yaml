@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.testapi.name }}-deployment-{{ .Release.Name }} 
+  labels:
+    app: {{ .Values.testapi.name }}
+spec:
+  replicas: {{ .Values.testapi.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.testapi.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.testapi.name }}
+    spec:
+      containers:
+      - name: {{ .Values.testapi.name }}
+        image: {{ .Values.testapi.image.repository }}:{{ .Values.testapi.image.tag }}
+        imagePullPolicy: {{ .Values.testapi.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.testapi.containerPort }}
+        env:
+          - name: MYSQL_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: mysql_host
+          - name: DBNAME
+            valueFrom:
+              configMapKeyRef:
+                name: demo-config
+                key: dbname
+          - name: DBPASS
+            valueFrom:
+              secretKeyRef:
+                name: demo-secret
+                key: password
+          - name: UNAME
+            valueFrom:
+              secretKeyRef:
+                name: demo-secret
+                key: username
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.testapi.containerPort }}
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /users
+            port: {{ .Values.testapi.containerPort }}
+          initialDelaySeconds: 15
+          periodSeconds: 5
