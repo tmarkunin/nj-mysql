@@ -60,6 +60,10 @@ helm init --service-account tiller
 # updates the repos for Helm repo integration
 helm repo update
 
+#Deploy with Helm
+ helm install --debug ./testapi-chart/
+
+
 
 
 

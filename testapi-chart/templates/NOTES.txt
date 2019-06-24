@@ -1,2 +1,7 @@
 1. Get the application URL by running these commands:
 
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} --field-selector metadata.name=testapi-service-{{ .Release.Name }} -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')
+  echo http://$SERVICE_IP:{{ .Values.testapi.containerPort }}
+
+
+ kubectl get svc  --field-selector metadata.name=testapi-service-jumpy-mandrill -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
