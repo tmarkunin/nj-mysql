@@ -18,4 +18,11 @@ steps:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
 
+- id: Deploy testapi Helm chart
+  name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['install', './testapi-chart/', '--namespace', 'default']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
+
 images: ['gcr.io/$PROJECT_ID/helm']
