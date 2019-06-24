@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus-deployment-{{ .Release.Name }} 
+  name: {{ .Values.prometheus.name }}-deployment-{{ .Release.Name }} 
   labels:
-    app: prometheus
+    app: {{ .Values.prometheus.name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: prometheus
+      app: {{ .Values.prometheus.name }}
   template:
     metadata:
       labels:
-        app: prometheus
+        app: {{ .Values.prometheus.name }}
     spec:
       containers:
-      - name: prometheus
-        image: tmarkunin/prometheus:1.1
-        imagePullPolicy: Always
+      - name: {{ .Values.prometheus.name }}
+        image: {{ .Values.prometheus.image.repository }}:{{ .Values.prometheus.image.tag }}
+        imagePullPolicy: {{ .Values.prometheus.image.imagePullPolicy }}
         ports:
-        - containerPort: 9090
+        - containerPort: {{ .Values.prometheus.containerPort }}

@@ -1,11 +1,17 @@
 steps:
-- id: list wks
+- id: Substitute Prometheus endpoint
   name: 'gcr.io/cloud-builders/curl'
   entrypoint: 'bash'
   args:
   - '-c' # pass what follows as a command to bash
   - |
-    ls -la
+    sed -i 's/testapi-service/testapi-{{ .Release.Name }}/g' prometheus/prometheus.yml
+    
+# Build new Prometheus image
+- id: Build Prometheus image
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', 'Dockerfile','-t', 'gcr.io/$PROJECT_ID/prometheus:$TAG_NAME', 'prometheus']
+
 
 # Build and test new testapi image
 - id: build-test-image
@@ -39,4 +45,4 @@ steps:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
 
-images: ['gcr.io/$PROJECT_ID/helm']
+images: ['gcr.io/$PROJECT_ID/prometheus:$TAG_NAME','gcr.io/$PROJECT_ID/helm']

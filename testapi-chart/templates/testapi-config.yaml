@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap 
 metadata:  
-  name: demo-config 
+  name: demo-config-{{ .Release.Name }}  
 data:  
   mysql_host: mysql-service-{{ .Release.Name }} 
   dbname: test
