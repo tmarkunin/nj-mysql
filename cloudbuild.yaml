@@ -8,6 +8,6 @@ steps:
     ls -la
 - id: Build Helm cloudbuilder image
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=gcr.io/$PROJECT_ID/helm', '--build-arg', 'HELM_VERSION=v2.14.0', '.']
+  args: ['build', '-f', 'helm_builder/Dockerfile', '--tag=gcr.io/$PROJECT_ID/helm', '--build-arg', 'HELM_VERSION=v2.14.0', 'helm_builder']
 
 images: ['gcr.io/$PROJECT_ID/helm']
