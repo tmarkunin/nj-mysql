@@ -24,7 +24,7 @@ spec:
           - name: MYSQL_HOST
             valueFrom:
               configMapKeyRef:
-                name: demo-config
+                name: demo-config-{{ .Release.Name }}
                 key: mysql_host
           - name: DBNAME
             valueFrom:
@@ -34,7 +34,7 @@ spec:
           - name: DBPASS
             valueFrom:
               secretKeyRef:
-                name: demo-secret
+                name: demo-secret-{{ .Release.Name }}
                 key: password
           - name: UNAME
             valueFrom:
