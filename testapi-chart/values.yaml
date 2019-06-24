@@ -5,8 +5,8 @@
 testapi:
   name: testapi
   image:
-    repository: gcr.io/$PROJECT_ID/testapi
-    tag: $TAG_NAME
+    repository: gcr.io/PROJECT_ID/testapi
+    tag: TAG_NAME
   imagePullPolicy: Always
   replicaCount: 1
   containerPort: 3000
@@ -14,8 +14,8 @@ testapi:
 prometheus:
   name: prometheus
   image:
-    repository: gcr.io/$PROJECT_ID/prometheus
-    tag: $TAG_NAME
+    repository: gcr.io/PROJECT_ID/prometheus
+    tag: TAG_NAME
   imagePullPolicy: Always
   replicaCount: 1
   containerPort: 9090
