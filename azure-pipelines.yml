@@ -5,13 +5,22 @@ steps:
     targetType: 'inline'
     script: 'ls'
 - task: Docker@2
-  displayName: Build and test testapi image
+  displayName: Build testapi image
   inputs:
     containerRegistry: 'tma-acr-connection'
     repository: 'testapi-test'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile-test'
+- task: DockerInstaller@0
+  displayName: install docker
+  inputs:
+    dockerVersion: '17.09.0-ce'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'docker run tma-acr-connection.azurecr.io/testapi-test:latest'
 - task: Docker@2
+  displayName: Build and push prod image
   inputs:
     containerRegistry: 'tma-acr-connection'
     repository: 'testapi'
