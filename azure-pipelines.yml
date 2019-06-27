@@ -1,8 +1,19 @@
 steps:
+- task: Bash@3
+  displayName: List pipeline wks contents
+  inputs:
+    targetType: 'inline'
+    script: 'ls'
 - task: Docker@2
   displayName: Build and test testapi image
   inputs:
     containerRegistry: 'tma-acr-connection'
-    repository: 'dotnetcore'
+    repository: 'testapi-test'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile-test'
+- task: Docker@2
+  inputs:
+    containerRegistry: 'tma-acr-connection'
+    repository: 'testapi'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
