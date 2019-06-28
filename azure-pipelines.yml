@@ -3,7 +3,7 @@ steps:
   displayName: List pipeline wks contents
   inputs:
     targetType: 'inline'
-    script: 'ls'
+    script: 'echo $(registry)'
 - task: Docker@2
   displayName: Build testapi image
   inputs:
