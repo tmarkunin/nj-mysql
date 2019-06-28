@@ -43,3 +43,5 @@ az aks create \
     --generate-ssh-keys
 
 
+# connect to AKS cluster
+az aks get-credentials --resource-group aksresgrp --name akscluster

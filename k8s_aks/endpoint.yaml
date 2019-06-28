@@ -1,0 +1,9 @@
+kind: Endpoints
+apiVersion: v1
+metadata:
+ name: mysql-service
+subsets:
+ - addresses:
+     - ip: 34.77.124.69
+   ports:
+     - port: 3306
