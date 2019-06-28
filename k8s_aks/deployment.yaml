@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: testapi
-        image: #testapiimage#
+        image: tmaregistry/#testapiimage#
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
