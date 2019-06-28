@@ -17,15 +17,15 @@ steps:
     containerRegistry: 'tma-acr-connection'
     command: 'login'
 - task: Bash@3
-  displayName: Remove test image from the registry
-  inputs:
-    targetType: 'inline'
-    script: 'docker rmi tmaregistry.azurecr.io/testapi-test:$(Build.BuildId)'
-- task: Bash@3
   displayName: Run test container to execute tests
   inputs:
     targetType: 'inline'
     script: 'docker run tmaregistry.azurecr.io/testapi-test:$(Build.BuildId)'
+- task: Bash@3
+  displayName: Remove test image from the registry
+  inputs:
+    targetType: 'inline'
+    script: 'docker rmi tmaregistry.azurecr.io/testapi-test:$(Build.BuildId)'
 - task: Docker@2
   displayName: Build and push prod image
   inputs:
@@ -33,3 +33,11 @@ steps:
     repository: 'testapi'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'AKS'
+    command: 'apply'
+    arguments: '-f k8s'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
