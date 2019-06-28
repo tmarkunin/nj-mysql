@@ -2,7 +2,7 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'sed -i "s/#testapiimage#/$(registry)/testapi:$(Build.BuildId)/g" k8s_aks/*.yaml'
+    script: 'sed -i "s/testapiimage/$(registry)/testapi:$(Build.BuildId)/g" k8s_aks/*.yaml'
 - task: Bash@3
   displayName: List pipeline wks contents
   inputs:
