@@ -20,7 +20,7 @@ steps:
   displayName: Run test container to execute tests
   inputs:
     targetType: 'inline'
-    script: 'docker run tmaregistry.azurecr.io/testapi-test:$(Build.BuildId)'
+    script: 'docker run $(registry)/testapi-test:$(Build.BuildId)'
 - task: Bash@3
   displayName: Remove test image from the registry
   inputs:
@@ -38,6 +38,6 @@ steps:
     connectionType: 'Kubernetes Service Connection'
     kubernetesServiceEndpoint: 'AKS'
     command: 'apply'
-    arguments: '-f k8s'
+    arguments: '-f k8s-aks'
     secretType: 'dockerRegistry'
     containerRegistryType: 'Azure Container Registry'
