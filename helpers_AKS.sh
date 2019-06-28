@@ -24,16 +24,6 @@ az acr credential show --name tmaregistry
 # You can add Service Connections (ACR,AKS) through DevOps project settings (Low left corner of UI)
 # Start Azure Pipelines https://azure.microsoft.com/en-us/services/devops/pipelines/
 
-#Task based build pipeline can look like
-steps:
-- task: Docker@2
-  displayName: Build and push docker image
-  inputs:
-    containerRegistry: 'tma-acr-connection'
-    repository: 'dotnetcore'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-
 
 # create AKS cluster (2 nodes is the limit for the trial account)
 az aks create \
@@ -45,3 +35,19 @@ az aks create \
 
 # connect to AKS cluster
 az aks get-credentials --resource-group aksresgrp --name akscluster
+
+#authorize aks for pulling images from ACR
+AKS_RESOURCE_GROUP=aksresgrp
+AKS_CLUSTER_NAME=akscluster
+ACR_RESOURCE_GROUP=aksresgrp
+ACR_NAME=tmaregistry
+
+# Get the id of the service principal configured for AKS
+CLIENT_ID=$(az aks show --resource-group $AKS_RESOURCE_GROUP --name $AKS_CLUSTER_NAME --query "servicePrincipalProfile.clientId" --output tsv)
+
+# Get the ACR registry resource id
+ACR_ID=$(az acr show --name $ACR_NAME --resource-group $ACR_RESOURCE_GROUP --query "id" --output tsv)
+
+# Create role assignment
+az role assignment create --assignee $CLIENT_ID --role acrpull --scope $ACR_ID
+

@@ -1,0 +1,51 @@
+steps:
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'sed -i "s/#testapiimage#/testapi:$(Build.BuildId)/g" k8s_aks/*.yaml'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'sed -i "s/tmaregistry/$(registry)/g" k8s_aks/*.yaml'
+- task: Bash@3
+  displayName: List pipeline wks contents
+  inputs:
+    targetType: 'inline'
+    script: 'ls'
+- task: Docker@2
+  displayName: Build testapi image
+  inputs:
+    containerRegistry: 'tma-acr-connection'
+    repository: 'testapi-test'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile-test'
+- task: Docker@2
+  displayName: Login to docker registry
+  inputs:
+    containerRegistry: 'tma-acr-connection'
+    command: 'login'
+- task: Bash@3
+  displayName: Run test container to execute tests
+  inputs:
+    targetType: 'inline'
+    script: 'docker run $(registry)/testapi-test:$(Build.BuildId)'
+- task: Bash@3
+  displayName: Remove test image from the registry
+  inputs:
+    targetType: 'inline'
+    script: 'docker rmi -f $(registry)/testapi-test:$(Build.BuildId)'
+- task: Docker@2
+  displayName: Build and push prod image
+  inputs:
+    containerRegistry: 'tma-acr-connection'
+    repository: 'testapi'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'AKS'
+    command: 'apply'
+    arguments: '-f k8s_aks'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
