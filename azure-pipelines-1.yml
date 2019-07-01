@@ -52,7 +52,7 @@ steps:
     Dockerfile: 'prometheus/Dockerfile'
 - task: HelmInstaller@1
   inputs:
-    helmVersionToInstall: 'latest'
+    helmVersionToInstall: 2.13.0
 - task: HelmDeploy@0
   inputs:
     connectionType: 'Kubernetes Service Connection'
