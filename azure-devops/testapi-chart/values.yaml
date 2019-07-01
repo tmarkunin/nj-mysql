@@ -1,0 +1,21 @@
+# Default values for testapi-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+testapi:
+  name: testapi
+  image:
+    repository:  #tmaregistry#/#testapiimage#
+    tag: #testapitag#
+  imagePullPolicy: Always
+  replicaCount: 1
+  containerPort: 3000
+
+prometheus:
+  name: prometheus
+  image:
+    repository:  tmaregistry/#prometheusimage#
+    tag: #prometheustag#
+  imagePullPolicy: Always
+  replicaCount: 1
+  containerPort: 9090
