@@ -5,7 +5,7 @@
 testapi:
   name: testapi
   image:
-    repository:  #tmaregistry#/#testapiimage#
+    repository:  #tmaregistry#/testapi
     tag: #testapitag#
   imagePullPolicy: Always
   replicaCount: 1
