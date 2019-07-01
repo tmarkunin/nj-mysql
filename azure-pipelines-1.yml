@@ -1,19 +1,38 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-- master
-
-pool:
-  vmImage: 'ubuntu-latest'
-
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'sed -i "s/#testapitag#/$(Build.BuildId)/g" azure-devops/*.yaml'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'sed -i "s/#tmaregistry#/$(registry)/g" azure-devops/*.yaml'
+- task: Docker@2
+  displayName: Build testapi image
+  inputs:
+    containerRegistry: 'tma-acr-connection'
+    repository: 'testapi-test'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile-test'
+- task: Docker@2
+  displayName: Login to docker registry
+  inputs:
+    containerRegistry: 'tma-acr-connection'
+    command: 'login'
+- task: Bash@3
+  displayName: Run test container to execute tests
+  inputs:
+    targetType: 'inline'
+    script: 'docker run $(registry)/testapi-test:$(Build.BuildId)'
+- task: Bash@3
+  displayName: Remove test image from the registry
+  inputs:
+    targetType: 'inline'
+    script: 'docker rmi -f $(registry)/testapi-test:$(Build.BuildId)'
+- task: Docker@2
+  displayName: Build and push prod image
+  inputs:
+    containerRegistry: 'tma-acr-connection'
+    repository: 'testapi'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
