@@ -14,7 +14,7 @@ testapi:
 prometheus:
   name: prometheus
   image:
-    repository:  tmaregistry/#prometheusimage#
+    repository:  #tmaregistry#/#prometheusimage#
     tag: #prometheustag#
   imagePullPolicy: Always
   replicaCount: 1
