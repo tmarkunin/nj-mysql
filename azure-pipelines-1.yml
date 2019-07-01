@@ -36,3 +36,9 @@ steps:
     repository: 'testapi'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+- task: Docker@2
+  inputs:
+    containerRegistry: 'tma-acr-connection'
+    repository: 'prometheus'
+    command: 'buildAndPush'
+    Dockerfile: 'prometheus/Dockerfile'
