@@ -61,7 +61,7 @@ steps:
     command: 'init'
     upgradeTiller: false
     waitForExecution: false
-    arguments: '--client-only'
+    arguments: '--client-only --service-account tiller'
 - task: HelmDeploy@0
   displayName: Deploy Helm package
   inputs:
