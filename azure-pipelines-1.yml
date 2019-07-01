@@ -57,12 +57,6 @@ steps:
   inputs:
     connectionType: 'Kubernetes Service Connection'
     kubernetesServiceConnection: 'AKS'
-    command: 'init'
-    arguments: '--service-account tiller'
-- task: HelmDeploy@0
-  inputs:
-    connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceConnection: 'AKS'
     command: 'install'
     chartType: 'FilePath'
     chartPath: 'azure-devops/testapi-chart'
