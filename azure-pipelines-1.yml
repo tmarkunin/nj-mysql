@@ -69,4 +69,5 @@ steps:
     kubernetesServiceConnection: 'AKS'
     command: 'install'
     chartType: 'FilePath'
+    namespace: test
     chartPath: 'azure-devops/testapi-chart'
