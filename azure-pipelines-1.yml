@@ -7,6 +7,14 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'sed -i "s/#tmaregistry#/$(registry)/g" azure-devops/testapi-chart/*.yaml'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'sed -i "s/#prometheustag#/$(Build.BuildId)/g" azure-devops/testapi-chart/*.yaml'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'sed -i "s/#prometheusimage#/prometheus/g" azure-devops/testapi-chart/*.yaml'
 - task: Docker@2
   displayName: Build testapi image
   inputs:
@@ -42,3 +50,6 @@ steps:
     repository: 'prometheus'
     command: 'buildAndPush'
     Dockerfile: 'prometheus/Dockerfile'
+- task: HelmInstaller@1
+  inputs:
+    helmVersionToInstall: 'latest'
