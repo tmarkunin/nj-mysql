@@ -53,14 +53,6 @@ steps:
 - task: HelmInstaller@1
   inputs:
     helmVersionToInstall: 2.13.0
-- task: Kubernetes@1
-  inputs:
-    connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceEndpoint: 'AKS'
-    command: 'apply'
-    arguments: '-f azure-devops/helm-init.yaml'
-    secretType: 'dockerRegistry'
-    containerRegistryType: 'Azure Container Registry'
 - task: HelmDeploy@0
   inputs:
     connectionType: 'Kubernetes Service Connection'
