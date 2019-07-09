@@ -2,3 +2,4 @@
 https://aws.amazon.com/blogs/devops/build-a-continuous-delivery-pipeline-for-your-container-images-with-amazon-ecr-as-source/
 
 #Create new build in CodeBuild and point it to github repo
+# In order build to succeed choose "Priveledged" in Environment settings for CodeBuild
