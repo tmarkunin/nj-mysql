@@ -15,7 +15,7 @@ phases:
       - echo ------------Building test image
       - docker build -f Dockerfile-test -t njsql-test:latest .
       - echo ------------Executing test image
-      - dokcer run njsql-test:latest
+      - docker run njsql-test:latest
       - echo Building the Docker image...
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
