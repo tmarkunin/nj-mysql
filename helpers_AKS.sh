@@ -36,6 +36,8 @@ az aks create \
 # connect to AKS cluster
 az aks get-credentials --resource-group aksresgrp --name akscluster
 
+kubectl apply -f azure-devops/helm-init.yaml
+
 #authorize aks for pulling images from ACR
 AKS_RESOURCE_GROUP=aksresgrp
 AKS_CLUSTER_NAME=akscluster
