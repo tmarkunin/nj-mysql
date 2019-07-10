@@ -25,3 +25,7 @@ kubectl edit -n kube-system configmap/aws-auth
   - system:masters
   rolearn: arn:aws:iam::005577361927:role/CodeBuildServiceRole
   username: CodeBuildServiceRole
+
+        - curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+      - sudo mv -v /tmp/eksctl /usr/local/bin
+      - eksctl create cluster --version=1.13 --name=eksworkshop-eksctl --nodes=3 --node-ami=auto --region=us-east-1

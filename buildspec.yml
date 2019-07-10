@@ -11,14 +11,13 @@ phases:
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
-      - echo *********************test kubectl
-      - kubectl 
+      - echo *********************list wks
+      - ls
       - echo *********************test aws
       - aws sts get-caller-identity 
       - aws eks update-kubeconfig --name eksworkshop-eksctl --role-arn arn:aws:iam::005577361927:role/CodeBuildServiceRole
-      - cat /root/.kube/config
-      - kubectl config current-context
-      - kubectl get nodes -v 10
+      - kubectl get nodes
+      - kubectl apply -f k8s/
       - echo Build started on `date`
       - echo ------------Building test image
       - docker build -f Dockerfile-test -t njsql-test:latest .
