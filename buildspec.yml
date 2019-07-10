@@ -11,6 +11,8 @@ phases:
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
+      - echo test kubectl
+      - kubectl
       - echo Build started on `date`
       - echo ------------Building test image
       - docker build -f Dockerfile-test -t njsql-test:latest .
