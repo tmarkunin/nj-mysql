@@ -14,7 +14,7 @@ phases:
       - echo *********************test kubectl
       - kubectl 
       - echo *********************test aws
-      - aws eks update-kubeconfig --name eksworkshop-eksct
+      - aws eks update-kubeconfig --name eksworkshop-eksctl
       - kubectl get nodes
       - echo Build started on `date`
       - echo ------------Building test image
