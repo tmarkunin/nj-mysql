@@ -14,6 +14,7 @@ phases:
       - echo *********************test kubectl
       - kubectl 
       - echo *********************test aws
+      - aws sts get-caller-identity
       - aws eks update-kubeconfig --name eksworkshop-eksctl
       - cat /root/.kube/config
       - kubectl config current-context
