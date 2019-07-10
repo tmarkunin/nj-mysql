@@ -32,3 +32,4 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - kubectl apply -f k8s/
       - kubectl set image deployment/testapi-deployment testapi=$REPOSITORY_URI:$IMAGE_TAG
+      - kubectl describe deployment testapi-deployment
