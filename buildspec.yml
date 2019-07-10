@@ -18,7 +18,7 @@ phases:
       - aws eks update-kubeconfig --name eksworkshop-eksctl --role-arn arn:aws:iam::005577361927:role/CodeBuildServiceRole
       - cat /root/.kube/config
       - kubectl config current-context
-      - kubectl get nodes
+      - kubectl get nodes -v 10
       - echo Build started on `date`
       - echo ------------Building test image
       - docker build -f Dockerfile-test -t njsql-test:latest .
