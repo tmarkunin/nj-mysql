@@ -12,9 +12,10 @@ phases:
   build:
     commands:
       - echo *********************test kubectl
-      - kubectl
-      - echo *********************test helm
-      - helm
+      - kubectl 
+      - echo *********************test aws
+      - aws eks update-kubeconfig --name eksworkshop-eksct
+      - kubectl get nodes
       - echo Build started on `date`
       - echo ------------Building test image
       - docker build -f Dockerfile-test -t njsql-test:latest .
