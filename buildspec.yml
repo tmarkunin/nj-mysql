@@ -16,8 +16,6 @@ phases:
       - echo *********************test aws
       - aws sts get-caller-identity 
       - aws eks update-kubeconfig --name eksworkshop-eksctl --role-arn arn:aws:iam::005577361927:role/CodeBuildServiceRole
-      - kubectl get nodes
-      - kubectl apply -f k8s/
       - echo Build started on `date`
       - echo ------------Building test image
       - docker build -f Dockerfile-test -t njsql-test:latest .
@@ -32,3 +30,5 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - kubectl apply -f k8s/
+      - kubectl set image deployment/testapi-deployment testapi=$REPOSITORY_URI:$IMAGE_TAG
