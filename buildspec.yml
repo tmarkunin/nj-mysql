@@ -13,9 +13,14 @@ phases:
     commands:
       - echo *********************list wks
       - ls
-      - echo *********************test aws
+      - echo *********************add eks connection to kubeconfig
       - aws sts get-caller-identity 
       - aws eks update-kubeconfig --name eksworkshop-eksctl --role-arn arn:aws:iam::005577361927:role/CodeBuildServiceRole
+      - echo *********************install helm
+      - kubectl apply -f azure-devops/helm-init.yaml
+      - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+      - helm init --service-account tiller
+      - helm
       - echo Build started on `date`
       - echo ------------Building test image
       - docker build -f Dockerfile-test -t njsql-test:latest .
