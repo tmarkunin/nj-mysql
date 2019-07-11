@@ -9,6 +9,9 @@ phases:
       - REPOSITORY_URI=005577361927.dkr.ecr.us-east-1.amazonaws.com/njsql
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+      - echo *************Replace tokens in Helm chart
+      - sed -i "s/#tmaregistry#/:$REPOSITORY_URI/g" aws-devops/testapi-chart/values.yaml
+      - sed -i "s/#testapitag#/:$IMAGE_TAG/g" aws-devops/testapi-chart/values.yaml
   build:
     commands:
       - echo *********************list wks
@@ -35,7 +38,5 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - sed -i "s/#tmaregistry#/:$REPOSITORY_URI/g" aws-devops/testapi-chart/values.yaml'
-      - sed -i "s/#testapitag#/:$IMAGE_TAG/g" aws-devops/testapi-chart/values.yaml'
       - helm install aws-devops/testapi-chart
       - kubectl get svc
