@@ -35,7 +35,7 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - sed -i "s/#tmaregistry#/:$REPOSITORY_URI/g" aws-devops/testapi-chart/values.yaml'
-      - sed -i "s/#testapitag#/:$IMAGE_TAG/g" aws-devops/testapi-chart/values.yaml'
-      - helm install aws-devops/testapi-chart
+      - kubectl apply -f k8s/
+      - kubectl set image deployment/testapi-deployment testapi=$REPOSITORY_URI:$IMAGE_TAG
+      - kubectl describe deployment testapi-deployment
       - kubectl get svc
