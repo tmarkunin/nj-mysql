@@ -5,7 +5,7 @@
 testapi:
   name: testapi
   image:
-    repository:  #tmaregistry#
+    repository:  #tmaregistry#/njsql
     tag: #testapitag#
   imagePullPolicy: Always
   replicaCount: 1
