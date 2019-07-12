@@ -12,6 +12,7 @@ phases:
       - echo *************Replace tokens in Helm chart
       - sed -i 's/#tmaregistry#/005577361927.dkr.ecr.us-east-1.amazonaws.com/g' aws-devops/testapi-chart/values.yaml
       - sed -i 's/#testapitag#/$IMAGE_TAG/g' aws-devops/testapi-chart/values.yaml
+      - cat aws-devops/testapi-chart/values.yaml
   build:
     commands:
       - echo *********************list wks
