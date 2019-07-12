@@ -6,7 +6,7 @@ testapi:
   name: testapi
   image:
     repository:  #tmaregistry#/njsql
-    tag: #testapitag#
+    tag: latest
   imagePullPolicy: Always
   replicaCount: 1
   containerPort: 3000
