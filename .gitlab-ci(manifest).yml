@@ -1,0 +1,61 @@
+image: docker:stable
+
+ variables:
+   # When using dind service we need to instruct docker, to talk with the
+   # daemon started inside of the service. The daemon is available with
+   # a network connection instead of the default /var/run/docker.sock socket.
+   #
+   # The 'docker' hostname is the alias of the service container as described at
+   # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
+   #
+   # Note that if you're using the Kubernetes executor, the variable should be set to
+   # tcp://localhost:2375/ because of how the Kubernetes executor connects services
+   # to the job container
+   # DOCKER_HOST: tcp://localhost:2375/
+   #
+   # For non-Kubernetes executors, we use tcp://docker:2375/
+   DOCKER_HOST: tcp://docker:2375/
+   # When using dind, it's wise to use the overlayfs driver for
+   # improved performance.
+   DOCKER_DRIVER: overlay2
+   IMAGE_NAME: testapi
+
+ services:
+   - docker:dind
+   
+ stages:
+  - build
+  - publish
+  
+
+ before_script:
+    # Install CA certs, openssl to https downloads, python for gcloud sdk
+    - apk add --update make ca-certificates openssl python
+    - update-ca-certificates
+    # Write our GCP service account private key into a file
+    - echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+    - cat ${HOME}/gcloud-service-key.json
+    # Download and install Google Cloud SDK
+    - wget https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
+    - tar zxvf google-cloud-sdk.tar.gz && ./google-cloud-sdk/install.sh --usage-reporting=false --path-update=true
+    - google-cloud-sdk/bin/gcloud --quiet components update
+    - google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+    - docker login -u _json_key --password-stdin https://us.gcr.io < ${HOME}/gcloud-service-key.json
+    - google-cloud-sdk/bin/gcloud container clusters get-credentials gitlab-cluster --zone us-central1-a --project gitlab-gke-246511
+    - google-cloud-sdk/bin/gcloud components install kubectl
+    - google-cloud-sdk/bin/kubectl get nodes
+
+ test:
+   stage: build
+   script:
+     - docker build -f Dockerfile-test -t testapi-test .
+     - docker run testapi-test
+
+ build prod:
+   stage: build
+   script:
+     - docker build -t gcr.io/$GCP_PROJECT_ID/$IMAGE_NAME:$(echo $CI_COMMIT_SHA | cut -c1-8) .
+     - google-cloud-sdk/bin/gcloud docker -- push gcr.io/$GCP_PROJECT_ID/$IMAGE_NAME:$(echo $CI_COMMIT_SHA | cut -c1-8)
+     - google-cloud-sdk/bin/kubectl apply k8s
+     - google-cloud-sdk/bin/kubectl set image deployment/testapi-deployment testapi=gcr.io/$GCP_PROJECT_ID/$IMAGE_NAME:$(echo $CI_COMMIT_SHA | cut -c1-8)
+

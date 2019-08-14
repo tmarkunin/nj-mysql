@@ -1,0 +1,36 @@
+image: docker:stable
+
+variables:
+  REPOSITORY_URL: 005577361927.dkr.ecr.us-east-1.amazonaws.com/gitlab
+  DOCKER_TLS_CERTDIR: ""
+
+services:
+- docker:dind
+
+before_script:
+  - sed -i "s/image-tag/$CI_COMMIT_SHORT_SHA/g" fargate-docker-sample.json
+  - apk add --no-cache curl jq python py-pip
+  - pip install awscli
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - $(aws ecr get-login --no-include-email --region us-east-1)
+    - docker build -t $REPOSITORY_URL:$CI_COMMIT_SHORT_SHA .
+    - docker push $REPOSITORY_URL:$CI_COMMIT_SHORT_SHA
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  image: docker:stable
+  script:
+    - sed -i "s/image-tag/$CI_COMMIT_SHORT_SHA/g" fargate-docker-sample.json
+    - pip install awscli
+    - aws ecs register-task-definition --cli-input-json --region us-east-1 file://fargate-docker-sample.json
+    - aws ecs update-service --cluster fargate-cluster --service fargate-docker-service --task-definition fargate-docker-sample --force-new-deployment --region us-east-1
+

@@ -63,6 +63,23 @@ helm repo update
 #Deploy with Helm
  helm install --debug ./testapi-chart/
 
+#Install Istio
+https://cloud.google.com/istio/docs/how-to/installing-oss
+
+#change istio-ingressgateway service type to LoadBalancer
+
+#Kiali auth err: 
+kubectl create secret generic kiali -n istio-system --from-literal=username=admin --from-literal=passphrase=admin
+#and restart kiali pod
+
+#To see trace data, you must send requests to your service. The number of requests depends on
+# Istio’s sampling rate. You set this rate when you install Istio. The default sampling rate
+# is 1%. You need to send at least 100 requests before the first trace is visible. 
+#To send a 100 requests to the productpage service, use the following command:
+
+$ for i in `seq 1 100`; do curl -s -o /dev/null http://$GATEWAY_URL/productpage; done
+
+
 
 
 
