@@ -1,0 +1,18 @@
+aws configure
+aws ecr get-login
+sudo docker tag tmaregistry/prometheus 005577361927.dkr.ecr.us-east-1.amazonaws.com/testecr
+sudo docker push 005577361927.dkr.ecr.us-east-1.amazonaws.com/testecr
+MANIFEST=$(aws ecr batch-get-image --repository-name testecr --image-ids imageTag=latest --query 'images[].imageManifest' --output text)
+#add image tag 'dev'
+aws ecr put-image --repository-name testecr --image-tag dev --image-manifest "$MANIFEST"
+#get image tags
+aws ecr describe-images --repository-name testecr --image-ids imageTag=latest --query imageDetails[0].imageTags
+
+#create CodePipeline and add ECR as a Source
+#Code Pipeline is not triggred if image tag is updated
+
+#There is AzureDevOps task to push image to ECR
+
+
+
+

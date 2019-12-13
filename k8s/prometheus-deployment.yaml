@@ -16,6 +16,13 @@ spec:
     spec:
       containers:
       - name: prometheus
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
         image: tmarkunin/prometheus:1.1
         imagePullPolicy: Always
         ports:

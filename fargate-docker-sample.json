@@ -1,0 +1,39 @@
+{
+    "executionRoleArn": "arn:aws:iam::005577361927:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+      {
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/fargate-docker-sample",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        },
+        "portMappings": [
+          {
+            "hostPort": 4000,
+            "protocol": "tcp",
+            "containerPort": 4000
+          }
+        ],
+        "cpu": 0,
+        "environment": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "image": "005577361927.dkr.ecr.us-east-1.amazonaws.com/gitlab:42d9365d",
+        "essential": true,
+        "name": "docker-sample"
+      }
+    ],
+    "placementConstraints": [],
+    "family": "fargate-docker-sample",
+    "networkMode": "awsvpc",
+    "memory": "1024",
+    "requiresCompatibilities": [
+      "FARGATE"
+    ],
+    "cpu": "512",
+    "volumes": []
+  }
+  
