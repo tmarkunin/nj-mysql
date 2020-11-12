@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        image: tmarkunin/maria:2.0
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: "/var/lib/mysql"
+          name: gp
+        ports:
+        - containerPort: 3306
+      volumes:
+        - name: gp
+          persistentVolumeClaim:
+            claimName: pvc1
